@@ -1,51 +1,111 @@
 import "../styles/home.css";
-import React from "react";
-import { Container,Row,Col, Carousel } from "react-bootstrap";
+import React,{useEffect,useState} from "react";
+import { Container,Row,Col, Modal,Button } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCommentAlt } from "react-icons/fa";
 import Navigation from './Navbar';
+import CreatePost from "./Modal";
+import axios from "axios";
 const Home = () => {
+  const [trends, setTrends] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [show, setShow] = useState(false);
+const handleShow = () =>setShow(true);
+const handleClose = () =>setShow(false)
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await axios.get("api/posts");
+      setPosts(res.data);
+    };
+    fetch();
+  }, []);
+
+   useEffect(() => {
+    const fetch = async () => {
+      const res = await axios.get("api/trend");
+      setTrends(res.data);
+    };
+    fetch();
+  }, []);
+              console.log("data: ", trends);
+     
+
+      function publieWhen(time) {
+
+        var dateNow = new Date();
+      const createdAt = new Date(time)
+      const created=  new Date(dateNow -createdAt)
+
+  let seconds = (created / 1000).toFixed(1);
+  let minutes = (created / (1000 * 60)).toFixed(1);
+  let hours = (created / (1000 * 60 * 60)).toFixed(1);
+  let days = (created / (1000 * 60 * 60 * 24)).toFixed();
+  if (seconds < 60) return seconds + " Sec";
+  else if (minutes < 60) return minutes + " Min";
+  else if (hours < 24) return hours + " Hrs";
+  else return days + " Days"
+}
+function post()
+{
+ 
+    
+    console.log("post smthng")
+}
+
     return ( 
         <div className="home">
+            <Modal show={show}>
+        <Modal.Header>
+            <Modal.Title>
+                Create Post
+            </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <CreatePost />  
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+        </Modal.Footer>
+      </Modal>
+
             <Navigation />
             <div className="container fluid page">
                        <div class="bg-light p-4">
-                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle" src={require('../imgs/hero-office-snoo_2021-08-19-001022_wfxa.png')} width="40"/><input class="form-control ml-1 shadow-none input" placeholder="Create Post"/></div>
+                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle" src={require('../imgs/hero-office-snoo_2021-08-19-001022_wfxa.png')} width="40"/><input onClick={handleShow} class="form-control ml-1 shadow-none input" placeholder="Create Post"/></div>
                     
                 </div>
-                 <h2 className="titles">Tranding Of The Day</h2>
+                 <h2 className="titles">Trending Of The Day</h2>
                 <div className="trand">
     
                     <div className="topics">
+                         {trends.map(trend=>(
                         <div className="card">
-                            <img  src={require('../imgs/hero-office-snoo_2021-08-19-001022_wfxa.png')} className="img"  alt="Hot Topics" />
+                        { trend.image ===null ?  <img  src={require('../imgs/hero-office-snoo_2021-08-19-001022_wfxa.png')} className="img"  alt="Hot Topics" /> : <img  src={trend.image} className="img"  alt="Hot Topics" />} 
                             <div className="detail">
-                                <h3>Username</h3>
-                                <p>this is the content</p>
+                                <h3>{trend.user.name}</h3>
+                                <p>{trend.Content}</p>
                             </div>
-                        </div>
-                        <div className="card">
-                        <img  src={require('../imgs/hero-office-snoo_2021-08-19-001022_wfxa.png')} className="img"  alt="Hot Topics" />
-                        <div className="detail">
-                            <h3>Username</h3>
-
-                        </div>
-                        </div>
+                        </div>))}
                     </div>
                 </div>
                 <div class="container mt-5">
-    <div class="d-flex justify-content-center row">
-        <div class="col-md-8">
+    <div class="d-flex justify-content-center row" >
+ {posts.map(post=>(
+        <div class="col-md-8" key={post.id}>
             <div class="d-flex flex-column comment-section">
                 <div class="bg-white p-2">
                     <div class="d-flex flex-row user-info"><img class="rounded-circle" src={require('../imgs/hero-office-snoo_2021-08-19-001022_wfxa.png')} width="40" />
                         <div class="d-flex flex-column justify-content-start ml-2">
-                        <span class="d-block font-weight-bold name">Username</span><span class="date text-black-50">Time of posting</span></div>
+                        <span class="d-block font-weight-bold name">{post.user.name}</span><span class="date text-black-50">{publieWhen(post.created_at)}</span></div>
                     </div>
                     <div class="mt-2">
-                        <p class="comment-text">what the post about slssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss.</p>
-
+                        <p class="comment-text">{post.Content}</p>
+                    { post.image !==null ? <center> <img src={post.image} alt="" width="50%" height="auto" /></center> : null }
                     </div>
+                     {/* <div class="aff_comment mt-5 mb-5 p-5">
+                         <p><span class="fw-bolder fs-5">username </span> content</p>
+                    </div> */}
                 </div>
                 <div class="bg-white">
                     <div class="d-flex flex-row fs-12">
@@ -58,7 +118,15 @@ const Home = () => {
                     <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="button">Post comment</button></div>
                 </div>
             </div>
-        </div>
+        </div>))}
+
+
+        
+
+
+
+
+
     </div>
 </div>
                 

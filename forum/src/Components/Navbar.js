@@ -4,6 +4,38 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "../styles/navbar.css";
 import logo from "../imgs/Reddit-Emblem.png";
 const Navigation = () => {
+  const logOut = () => {
+		localStorage.removeItem("token");
+		localStorage.removeItem("username");
+	}
+  
+  var sign = '';
+  if(!localStorage.getItem('token'))
+  {
+    sign = 
+      <>
+          <Nav.Link as={Link} to={"/Signup"} >
+        <Button variant="danger">
+            Signup 
+        </Button>
+        </Nav.Link>
+         <Nav.Link as={Link} to={"/Signin"}>Signin</Nav.Link>
+      </>
+    
+  }
+  else{
+    sign=<>
+   <Nav.Link  as={Link} to={"/Signin"} >
+        <Button variant="danger" onClick={logOut}>
+            Logout
+        </Button>
+      </Nav.Link> 
+    </>
+  }
+
+
+
+
     return ( 
         <Navbar expand="lg" className="nav">
   <Container>
@@ -23,15 +55,12 @@ const Navigation = () => {
           placeholder="Search"
           className="me-2"
           aria-label="Search"
+
         />
          <Button variant="outline-success">Search</Button>
       </Form>
-      <Nav.Link as={Link} to={"/Signup"} >
-        <Button variant="danger">
-            Signup 
-        </Button>
-      </Nav.Link>
-         <Nav.Link as={Link} to={"/Signin"}>Signin</Nav.Link>
+      {sign}
+       
     </Navbar.Collapse>
   </Container>
 </Navbar>

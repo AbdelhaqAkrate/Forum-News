@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Arima+Madurai&family=Poppins:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+::-webkit-scrollbar {display:none;}
 html, body, #app, #app>div {
   height: 100%;
   background-color: rgb(255, 255, 255) !important;

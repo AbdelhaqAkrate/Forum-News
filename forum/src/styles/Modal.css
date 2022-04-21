@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Rowdies&family=Rubik:ital@1&display=swap');
+.btn-success {
+    margin-top: 36px;
+}
+.message{
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+  background-color: rgb(17, 218, 67);
+  font-family: 'Rubik', sans-serif;
+    -webkit-animation: cssAnimation 5s forwards; 
+    animation: cssAnimation 5s forwards;
+}
+@keyframes cssAnimation {
+    0%   {opacity: 1;}
+    90%  {opacity: 1;}
+    100% {opacity: 0;}
+}
+@-webkit-keyframes cssAnimation {
+    0%   {opacity: 1;}
+    90%  {opacity: 1;}
+    100% {opacity: 0;}
+}
+p{
+  margin-top: 10px;
+  padding: 10px;
+}
+.modal{
+      transform: translateY(20px)
+}
+#upload{
+  width: 80%;
+}
+ label {
+        cursor: pointer !important;
+      background-color:  rgb(255, 123, 0);;
+        color: #ffffff;
+        padding: 10px 20px !important;
+      }
+      #uploade {
+    left: 10px;
+    top: 8px;
+    opacity: 0 !important;
+    position: absolute  !important;
+      
+      }
