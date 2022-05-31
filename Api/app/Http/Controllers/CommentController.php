@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     /**
@@ -38,6 +39,41 @@ class CommentController extends Controller
     {
         //
     }
+      public function postComment(Request $request)
+        {
+            $validator = Validator::make($request->all(), [
+            'body' =>'required',
+        ]);
+        if($validator->fails())
+        {
+            return response()->json([
+                'error'=>$validator->messages(),
+            ]);
+        }
+        else{
+
+            $comment = Comment::create(
+                [
+                'body'=>$request->body,
+                'post_id'=>$request->post_id,
+                'user_id'=>$request->user_id
+            ]
+        );
+            return response()->json([
+                'message'=>"Your comment sent Successfully",
+            ]);
+            
+        }
+        }
+
+           public function DeleteComment($id)
+        {
+            $comment=Comment::find($id);
+            $comment->delete();
+             return response()->json([
+                'message'=>"Comment Deleted Successfully",
+            ]);
+        }
 
     /**
      * Display the specified resource.
@@ -49,7 +85,11 @@ class CommentController extends Controller
     {
         //
     }
-
+   public function comments()
+    {
+        $comments = Comment::all();
+        return response()->json($comments);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -68,9 +108,10 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCommentRequest $request, Comment $comment)
+    public function update(Request $request,$id)
     {
-        //
+       $comments= Comment::find($id);;
+       return response()->json($comments);
     }
 
     /**

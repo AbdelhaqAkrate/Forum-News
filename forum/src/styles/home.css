@@ -45,6 +45,13 @@ grid-template-columns: repeat(3,1fr);
     -webkit-border-radius:50%;
    
 }
+.edit{
+    align-self: flex-end;
+        width: 119px;
+    display: flex;
+    gap: 6px;
+
+}
 .card{
     height: 200px;
     margin: 30px;
@@ -92,7 +99,12 @@ cursor: pointer;
     text-align: center;
     height: 220px;
 }
-
+.notice{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
 
 
 

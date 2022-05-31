@@ -1,10 +1,10 @@
-import "../styles/signin.css";
+import "../../styles/signin.css";
 import React,{useState} from "react";
 import Navigation from './Navbar';
 import {Link} from 'react-router-dom';
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
-const Signin = () => {
+const SigninAdmin = () => {
     const navigate = useNavigate();
     const [data,setData] = useState({
         name:'',
@@ -23,14 +23,14 @@ const Signin = () => {
             email: data.email,
             password : data.password,
         }
-          axios.post(`/api/login`,inputs)
+          axios.post(`/api/admin`,inputs)
         .then(res =>{
                 if(res.data.status === 200)
                 {
-                    localStorage.setItem('token',res.data.token);
-                    localStorage.setItem('user_id',res.data.user_id)
-                    localStorage.setItem('username',res.data.username);
-                    navigate('/home');
+                    localStorage.setItem('adminToken',res.data.adminToken);
+                    localStorage.setItem('admin_id',res.data.admin_id)
+                    localStorage.setItem('adminName',res.data.adminName);
+                    navigate('/Users');
                 }
                  if(res.data.status === 401)
                 {
@@ -52,7 +52,7 @@ const Signin = () => {
                     <div class="right-side">
                         <div class="signin_form s_form ">
                             <div class="login">
-                                <h2>User Login</h2>
+                                <h2>Admin Login</h2>
                                
                             </div>
                              <div className="error">{data.error}</div>
@@ -62,9 +62,9 @@ const Signin = () => {
                             <div class="login_btn"> <button class="login_button">LOGIN</button> </div>
                            </form>
                         </div>
-                        <div class="signup_form s_form ">
+                        <div class="signup_form s_form">
                             <div class="login">
-                                 <a class="already" href="/Signup">New Account?</a>
+                                 <a class="already" href="/newAdmin">New Admin ??</a>
                             </div>
                         </div>
                     </div>
@@ -75,4 +75,4 @@ const Signin = () => {
      );
 }
  
-export default Signin;
+export default SigninAdmin;

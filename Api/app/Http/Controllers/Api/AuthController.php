@@ -6,15 +6,17 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
         public function index()
     {
-        $products = User::all();
+        $users = User::all();
         // return view('products.index', compact('products'))->with(request()->input('page'));
-        return response()->json($products);
+        return response()->json($users);
     }
     public function register(Request $request){
         $validator = Validator::make($request->all(), [
@@ -78,7 +80,48 @@ class AuthController extends Controller
             ]);
             }
         }
-           
         
     }
+       public function updateUser(Request $request,$id)
+           {
+                $validator = Validator::make($request->all(), [
+            "name" => "required|min:4",
+            "password" => "nullable|min:6",
+        ]); 
+           if($validator->fails())
+        {
+            return response()->json([
+                'error'=>$validator->messages(),
+              
+            ]);
+        }
+        else
+       { $user = User::find($id);
+        $user->name = $request->name;
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+        }
+        $user->save();
+         return response()->json([
+                'message'=>"account updated Successfully",
+            ]);}
+           }
+          public function getUser(Request $request,$id)
+            {
+            $get= User::find($id);;
+            return response()->json($get);
+            }
+
+             public function DeleteUser($id)
+        {
+            $user=User::find($id);
+            
+            $user->delete();
+            $post = Post::where('user_id', $id)->delete();
+            $post = Comment::where('user_id', $id)->delete();
+             return response()->json([
+                'message'=>"user Deleted Successfully",
+            ]);
+        }
+
 }

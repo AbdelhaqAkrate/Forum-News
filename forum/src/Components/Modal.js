@@ -16,22 +16,30 @@ function CreatePost(){
         messages:[]
     });
 
-    const post = (e) => {
+    const post =async (e) => {
         e.preventDefault();
 
-    const inputs ={
-            title: data.title,
-            Content: data.Content,
-            image : file.image.name,
-            likes : 0,
-            dislikes : 0,
-            user_id : localStorage['user_id'],
-            categorie_id : parseInt(data.cat)
-        }
-        console.log(inputs)
-        axios.post(`api/create`,inputs)
+    // const inputs ={
+    //         title: data.title,
+    //         Content: data.Content,
+    //         image : file.image.name,
+    //         likes : 0,
+    //         dislikes : 0,
+    //         user_id : localStorage['user_id'],
+    //         categorie_id : parseInt(data.cat)
+    //     }
+        const dataForm = new FormData();
+         dataForm.append('title',data.title);
+         dataForm.append('Content',data.Content);
+         dataForm.append('image',file.image);
+         dataForm.append('likes',0);
+         dataForm.append('dislikes',0);
+         dataForm.append('user_id',localStorage['user_id']);
+         dataForm.append('categorie_id',parseInt(data.cat));
+      
+        await axios.post(`api/create`, dataForm)
         .then(res =>{
-                if(res.data.status === 200)
+                if(res.status === 200)
                 {
                   console.log(res)
                 }
@@ -54,7 +62,7 @@ function CreatePost(){
 
   
     }
-     console.log(file.image.name)
+    //  console.log(file.image.name)
   
   useEffect(() => {
     const fetch = async () => {
